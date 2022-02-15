@@ -535,7 +535,7 @@ def charge(charge_targe_id,cookies,sid,account):
             # print(result)
             user_coins = result['user_coins']   #剩余能量
             coins = result['plant_info']['coins']   #消耗能量
-            msg ("充能成功，消耗【{1}】能量，剩余能量【{2}】".format (coins,user_coins))
+            msg ("充能成功，消耗【{0}】能量，剩余能量【{1}】".format (coins,user_coins))
             time.sleep(2)
 
     except Exception as e:
