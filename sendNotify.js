@@ -286,7 +286,7 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
             }
         }
 
-        if (text.indexOf("cookie已失效") != -1 || desp.indexOf("重新登录获取") != -1 || text == "Ninja 运行通知") {
+        if (text.indexOf("已失效") != -1 || desp.indexOf("登录") != -1 || text == "Ninja 运行通知") {
 
             if (Notify_CKTask) {
                 console.log("触发CK脚本，开始执行....");
@@ -304,7 +304,7 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
             }
         }
         if (process.env.NOTIFY_AUTOCHECKCK == "true") {
-            if (text.indexOf("cookie已失效") != -1 || desp.indexOf("重新登录获取") != -1) {
+            if (text.indexOf("已失效") != -1 || desp.indexOf("登录") != -1) {
                 console.log(`捕获CK过期通知，开始尝试处理...`);
                 var strPtPin = await GetPtPin(text);
                 var strdecPtPin = decodeURIComponent(strPtPin);
@@ -390,7 +390,7 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
                                 if (DisableCkBody.code == 200) {
                                     console.log(`京东账号` + strdecPtPin + `已失效,自动禁用成功!\n`);
 
-                                    strNotifyOneTemp = `京东账号: ` + strdecPtPin + ` 已失效,已自动禁用!\n如果要继续挂机，请重新登录账号，账号有效期为30天.`;
+                                    strNotifyOneTemp = `京东账号: ` + strdecPtPin + ` 已失效,已自动禁用!\n如果要继续挂机，请重新登录账号.`;
                                     strNotifyOneTemp += "\n任务标题：" + strtext;
                                     if (strAllNotify)
                                         strNotifyOneTemp += `\n` + strAllNotify;
@@ -401,7 +401,7 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
 
                                 } else {
                                     console.log(`京东账号` + strPtPin + `已失效,自动禁用失败!\n`);
-                                    strNotifyOneTemp = `京东账号: ` + strdecPtPin + ` 已失效!\n如果要继续挂机，请重新登录账号，账号有效期为30天.`;
+                                    strNotifyOneTemp = `京东账号: ` + strdecPtPin + ` 已失效!\n如果要继续挂机，请重新登录账号.`;
                                     strNotifyOneTemp += "\n任务标题：" + strtext;
                                     if (strAllNotify)
                                         strNotifyOneTemp += `\n` + strAllNotify;
@@ -429,7 +429,7 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
             }
         }
 
-        if (strtext.indexOf("已失效") != -1 || strdesp.indexOf("重新") != -1 || strtext == "Ninja 运行通知") {
+        if (strtext.indexOf("已失效") != -1 || strdesp.indexOf("登录") != -1 || strtext == "Ninja 运行通知") {
             if (Notify_NoCKFalse == "true" && text != "Ninja 运行通知") {
                 console.log(`检测到NOTIFY_NOCKFALSE变量为true,不发送ck失效通知...`);
                 return;
