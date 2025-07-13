@@ -9,7 +9,7 @@
 国内机（带代理）：
 
 ```
-ql repo https://js.okyago.com/https://github.com/6dylan6/jdpro.git "jd_|jx_|jddj_" "backUp" "^jd[^_]|USER|JD|function|sendNotify|utils"
+ql repo https://js.googo.win/https://github.com/6dylan6/jdpro.git "jd_|jx_|jddj_" "backUp" "^jd[^_]|USER|JD|function|sendNotify|utils"
 
 ```
 
