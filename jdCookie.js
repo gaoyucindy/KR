@@ -55,7 +55,7 @@ if (process.env.BANPIN) {
             let pinarr = banpin.split(',');
             console.log(`\n❗已配置全部任务不执行pin: ${JSON.stringify(pinarr)}`);
             for (let i of pinarr) {
-                //j = decodeURIComponent(j);
+                i = decodeURIComponent(i);
                 CookieJDs = CookieJDs.filter(x => !x.includes(encodeURIComponent(i)));
             }
         }
@@ -63,9 +63,11 @@ if (process.env.BANPIN) {
 }
 if (process.env.ALLOWPIN) {
     try {
-        let pin = process.env.ALLOWPIN;
+        const pin = process.env.ALLOWPIN;
+        const runck = [];
         if (pin.includes('@')) {
             const arr = pin.split('&');
+
             for (let i of arr) {
                 //if (process.mainModule.filename.includes(i.split('^')[0])) {
                 if (i.split('@')[0].split('|').filter(x => process.argv[1].includes(x)).length != 0) {
@@ -73,20 +75,21 @@ if (process.env.ALLOWPIN) {
                     console.log(`\n❗已配置该任务只执行pin: ${JSON.stringify(pinarr)}`);
                     for (let j of pinarr) {
                         j = decodeURIComponent(j);
-                        CookieJDs = CookieJDs.filter(x => x.includes(encodeURIComponent(j)));
+                        runck.push(...CookieJDs.filter(x => x.includes(encodeURIComponent(j))));
                     }
 
                 }
             }
-
+            
         } else {
             let pinarr = pin.split(',');
             console.log(`\n❗已配置全部任务只执行pin: ${JSON.stringify(pinarr)}`);
             for (let i of pinarr) {
-                //j = decodeURIComponent(j);
-                CookieJDs = CookieJDs.filter(x => x.includes(encodeURIComponent(i)));
+                i = decodeURIComponent(i);
+                runck.push(...CookieJDs.filter(x => x.includes(encodeURIComponent(i))));
             }
         }
+        CookieJDs = runck
     } catch { }
 }
 console.log(`\n====================共${CookieJDs.length}个京东账号Cookie=================`);
