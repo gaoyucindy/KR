@@ -80,7 +80,6 @@ if (process.env.ALLOWPIN) {
 
                 }
             }
-            
         } else {
             let pinarr = pin.split(',');
             console.log(`\n❗已配置全部任务只执行pin: ${JSON.stringify(pinarr)}`);
@@ -89,7 +88,9 @@ if (process.env.ALLOWPIN) {
                 runck.push(...CookieJDs.filter(x => x.includes(encodeURIComponent(i))));
             }
         }
-        CookieJDs = runck
+        if (runck.length > 0) {
+            CookieJDs = runck
+        }
     } catch { }
 }
 console.log(`\n====================共${CookieJDs.length}个京东账号Cookie=================`);
