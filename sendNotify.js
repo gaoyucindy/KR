@@ -144,6 +144,7 @@ let NTFY_URL = '';
 let NTFY_TOKEN = '';
 let NTFY_TOPIC = '';
 let NTFY_PRIORITY = 3;
+let NTFY_ACTIONS = '';
 
 // =======================================BncrBot通知设置区域==============================================
 //BncrHost 填写BncrHost地址,如https://192.168.31.192:9090
@@ -748,6 +749,9 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
         if (process.env["NTFY_PRIORITY" + UseGroupNotify]) {
             NTFY_PRIORITY = process.env["NTFY_PRIORITY" + UseGroupNotify];
         }
+        if (process.env["NTFY_ACTIONS" + UseGroupNotify]) {
+            NTFY_ACTIONS = process.env["NTFY_ACTIONS" + UseGroupNotify];
+        }
         if (process.env["BncrHost" + UseGroupNotify]) {
             BncrHost = process.env["BncrHost" + UseGroupNotify];
         }
@@ -1295,6 +1299,7 @@ function ntfyNotify(text, desp) {
                     'Icon': 'https://user-images.githubusercontent.com/22700758/191449379-f9f56204-0e31-4a16-be5a-331f52696a73.png',
                     'Title': encodeRFC2047(text),
                     'Priority': `${NTFY_PRIORITY}`,
+                    'Actions': `${NTFY_ACTIONS}`,
                 }
             };
             console.log('ntfy options:', options); // 打印 options 内容
