@@ -136,6 +136,16 @@ let GOTIFY_URL = '';
 let GOTIFY_TOKEN = '';
 let GOTIFY_PRIORITY = 0;
 
+// =======================================ntfy 通知设置区域==============================================
+//ntfy_url 填写 ntfy 地址,如https://push.example.de:8080
+//ntfy_token 填写 ntfy 的消息应用token
+//ntfy_priority 填写推送消息优先级,默认为0
+let NTFY_URL = '';
+let NTFY_TOKEN = '';
+let NTFY_TOPIC = '';
+let NTFY_PRIORITY = 3;
+let NTFY_ACTIONS = '';
+
 // =======================================BncrBot通知设置区域==============================================
 //BncrHost 填写BncrHost地址,如https://192.168.31.192:9090
 //BncrToken 填写Bncr的消息应用Token
@@ -727,6 +737,21 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
         if (process.env["GOTIFY_PRIORITY" + UseGroupNotify]) {
             GOTIFY_PRIORITY = process.env["GOTIFY_PRIORITY" + UseGroupNotify];
         }
+        if (process.env["NTFY_URL" + UseGroupNotify]) {
+            NTFY_URL = process.env["NTFY_URL" + UseGroupNotify];
+        }
+        if (process.env["NTFY_TOKEN" + UseGroupNotify]) {
+            NTFY_TOKEN = process.env["NTFY_TOKEN" + UseGroupNotify];
+        }
+        if (process.env["NTFY_TOPIC" + UseGroupNotify]) {
+            NTFY_TOPIC = process.env["NTFY_TOPIC" + UseGroupNotify];
+        }
+        if (process.env["NTFY_PRIORITY" + UseGroupNotify]) {
+            NTFY_PRIORITY = process.env["NTFY_PRIORITY" + UseGroupNotify];
+        }
+        if (process.env["NTFY_ACTIONS" + UseGroupNotify]) {
+            NTFY_ACTIONS = process.env["NTFY_ACTIONS" + UseGroupNotify];
+        }
         if (process.env["BncrHost" + UseGroupNotify]) {
             BncrHost = process.env["BncrHost" + UseGroupNotify];
         }
@@ -907,6 +932,7 @@ async function sendNotify(text, desp, params = {}, author = "",strsummary="") {
         iGotNotify(text, desp, params), //iGot
         gobotNotify(text, desp), //go-cqhttp
         gotifyNotify(text, desp), //gotify
+        ntfyNotify(text, desp), //ntfy
         bncrNotify(text, desp), //bncr
             wxpusherNotify(text, desp), // wxpusher
             PushDeerNotify(text, desp) //pushdeer推送
@@ -1238,6 +1264,54 @@ function gotifyNotify(text, desp) {
                         data = JSON.parse(data);
                         if (data.id) {
                             console.log('gotify发送通知消息成功🎉\n');
+                        } else {
+                            console.log(`${data.message}\n`);
+                        }
+                    }
+                } catch (e) {
+                    $.logErr(e, resp);
+                }
+                finally {
+                    resolve();
+                }
+            });
+        } else {
+            resolve();
+        }
+    });
+}
+
+function encodeRFC2047(str) {
+    return `=?UTF-8?B?${Buffer.from(str, 'utf8').toString('base64')}?=`;
+}
+
+function ntfyNotify(text, desp) {
+    console.log('ntfy发送通知\n');
+    console.log('NTFY_URL:', NTFY_URL);
+    console.log('NTFY_TOKEN:', NTFY_TOKEN);
+    console.log('NTFY_TOPIC:', NTFY_TOPIC);
+    return new Promise((resolve) => {
+        if (NTFY_URL && NTFY_TOKEN && NTFY_TOPIC) {
+            const options = {
+                url: `${NTFY_URL}/${NTFY_TOPIC}?auth=${NTFY_TOKEN}`,
+                body: Buffer.from(desp, 'utf-8').toString(),
+                headers: {
+                    'Icon': 'https://user-images.githubusercontent.com/22700758/191449379-f9f56204-0e31-4a16-be5a-331f52696a73.png',
+                    'Title': encodeRFC2047(text),
+                    'Priority': `${NTFY_PRIORITY}`,
+                    'Actions': `${NTFY_ACTIONS}`,
+                }
+            };
+            console.log('ntfy options:', options); // 打印 options 内容
+            $.post(options, (err, resp, data) => {
+                try {
+                    if (err) {
+                        console.log('ntfy发送通知调用API失败！！\n');
+                        console.log(err);
+                    } else {
+                        data = JSON.parse(data);
+                        if (data.id) {
+                            console.log('ntfy发送通知消息成功🎉\n');
                         } else {
                             console.log(`${data.message}\n`);
                         }
